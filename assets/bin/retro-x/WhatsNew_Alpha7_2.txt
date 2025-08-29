@@ -1,0 +1,165 @@
+Changes from Alpha 7.1 to Alpha 8 [Last Alpha varsion] (29.11.08 - 5.4.09). Requested by and help by - in square brackets.
+This is the final Retro-X alpha version, next development stage and will become Beta version.
+
+Bugfixes:
+* Converter:
+  o Quicksave was not working with images copied from clipboard
+  o Colour Error diffusion zx modes used Bright 0 palette [Baze]
+  o upper controls for Sprinter ordered dither 233 was not available
+  o Scanning was causing a "bad window handle" error, but it was still working
+  o Save directory for RXA animations was ignored.
+  o Initial selection in Hires modes was wrong, just a quarter of screen was selected.
+  o Pixel Grid was not working
+* Painter:
+  o Palette colour displayer for SAM modes 1+2+4 and some other fixed for the new Palette colour selectors size.
+  o Fill was ignoring lower screen border sometimes.
+  o Fill was not working in 16 bit display mode (Who cares? Nobody uses 16 bit mode anymore).
+  o Attribute change was writting in forbidden area sometimes
+  o Some Hires modes bugs fixed
+  o False reaction on ButtonUp Windows message caused painting unwanted pixels.
+  o Grid in Zoom repaired
+  o Cursor does not flicker anymore or change to hourglass, This also fixed the flickering on Windows Fista (Yes, I had this shit installed for 2 hours on my notebook).
+  o After loading RXS files, the screen was not updated.
+  o Current Attributes/Transparency info in statusbar was not updated
+  o wrong tool highlighted after loading new screen
+* Disc Master:
+  o MGT Disc Image creation was broken [Digital Prawn]
+  o Disassembler did not interpret the n bytes correctly
+* XIDE
+  o AutoUnREM deleted the last selected line
+* Viewer:
+  o Check of GreyTV display and other was often set to wrong value if changed.
+* Various:
+  o ASM File truncation of ASM strings now correct
+  o Font editor crashed on importing PC fonts
+  o Compressor was ignoring the last byte of Attribute area [Ariel of World XXI Software]
+  o Saving of RGB and ASC had some problems because of reading wrong gadget
+  o TZX saving was not memorized, so next time TAP saving was offered
+
+Changes:
+* Painter:
+  o Cursor changes to crosshair only if on drawing or preview area.
+  o Objects now in own tab.
+  o Changed the behaviour of pixel testing (used for making Automask), eliminating the outline on Border.
+  o Attribute changing optimised
+  o Redraw procedure improved for more speed.
+  o Object Manager easier accessible from menu
+  o Zoom Icon now calls a popup menu for setting the desired zoom level
+  o Improved mouse coordinate to screen calculation routine. Now faster and smaller
+  o Grid now really a Pixel Grid with markings every 8x8 pixels
+  o Redraw speed of Spectrum image dramaticaly improved, keeping genlock capability
+  o Full Zoom view located on F9 (like Deluxe Paint).
+  o Improved the speed of image scrolling (using cursor keys)
+* Converter:
+  o Redraw procedure improved, speedup on my PC e.g. for ZX SCR: 1200 -> 2000 redraws/sec.
+  o Bitonal monochrome modes speeded a little bit up. Error diffusion: 20% faster.
+  o Greyscale modes (SAM Mode 4) speeded up, up to 30% gain
+  o Speed-Improved almost all modes in the converter
+  o AVI file frame grab rewritten, this results in a much faster AVI conversion than before.
+  o Fast finder: the cursor does not need to hit the exact centre anymore to move the frame.
+  o Spectrum Redraw procedure changed to memory LUT, now 3000-3100 redraws/sec for ZX: Attr-modes 8x8, 8x2 and 8x1
+  o Simple memory LUT for mono Hires Modes (timex, CPC, Acorn) speeds up by 40%.
+  o LUT Memory tables for ZX Lowres ASCII 8x8 chars and C64 Hires modes (except for FLI), for extreme speedup.
+  o C64 Lowres: Redraw routine speeded up by 20%
+  o Atari XE/XL Monochrome Gr8 Redraw speed improved by 60%
+  o Fast finder: Cursor controls removed, use shift to snap to grid
+  o Loading AVI does not reset th screen mode anymore
+* Viewer:
+  o All file filters now activated (Bugfix in PureBasic 4.30 Beta 5)
+* Objects Manager:
+  o Currently selected objects is now current object in Painter
+  o Improved many routines and optimised them.
+  o Changed to final Data format, new RXO containers will include the Objects, and all other lists.
+* Disc Master:
+  o Data seeker does not use now cursor keys to increase/decrase width. This is now replaced by a Spin-gadget.
+  o Double Picture finder: Reading picture data speeded up.
+* Various:
+  o Switched to PureBasic 4.30 Final
+  o Text display speeded up much (Hex Viewer in data seeker)
+  o Font Editor is now a procedure and does not interfer with any parts of Retro-X anymore
+  o Some refactoring in "save as" procedure for less memory use and better handling of future improvements
+
+Additions:
+* Converter:
+  o Check for maximal freescreen size included (if the spin gadgets turn red, you cannot set this resolution due to lack of memory (I reserved only two megabytes for screen). At the moment you cannot reach this limit.
+  o GreyTV MLT/IFLI/ColorDraw can now use the reduced colours palettes too.
+  o Sprinter 2000 Most used colours palette calculation works now (with best available quality)
+  o Sprinter 2000 Lowres Error diffusion mode
+  o Sprinter 2000 Hires Polychrome modes (no save yet): solid, midtone, error diffusion
+  o Sprinter 2000 Hires monochrome modes (no save yet): solid, midtone, ordered, Error diffusion
+  o Image preprocessing: Flip, Mirror and Inversions.
+  o Adaptive Palette calculation method (works at moment only with standard RGB values of 128,128,128)
+  o Sprinter Lowres RXA animations now saved with palette, same about Amiga HAM6
+  o On Forever I added Atari XL Gr9 16 Grey levels modes: Solid, Midtone, Ordered. No save yet
+  o Atari XL Medres Monochrome modes (Solid, Midtone, Ordered, ErrDiff), no save yet
+  o Atari XL Overscan settings up to 48x30 char
+  o Lowres Colour Full Scan Attribute conversion 32x24 with 71 colours [Yerzmyey, but planed earlier too]
+  o Lowrec GreyTV Full Scan Attribute, at moment 55 grey levels, but palette will be improved later
+* Painter:
+  o Circle Coordinates display.
+  o Full zoom view rewritten and readded for Screens and Objects
+  o Spline Tool (Arc) with four control points
+  o Testing new code for detection if cursor inside selection, will be later used to move selected area, now it just change the cursor shape.
+  o Sprinter 2000 Hires Mode
+  o Grabing Tiles and grabing to Font (Autosnap)
+  o Zoom now also mapped on mouse Buttons 4 and 5 (Previous/Next) and the wheel, Mouse wheel inactive in Map editor
+  o Started to write Map editor (Please note, it is not fully working yet)
+  o Map Editor zoom levels: 50% (Smoothed), 100%, 200% and 400% (Raw)
+  o RXO Object file can be imported by dragging it into Painter
+  o NewMap dialogue
+  o Map Tree
+  o Scrolling map using right mouse button works now. Cursors are not used because they interfer with Tiles list.
+  o Genlock menu with possibility to change the Genlock mode (replace colour=standard, and blend, mixes Image with background), not in all screen modes.
+  o Full Zoom view now available as Toolbar icon.
+  o Maps are now saved with Objects and Objects lists in RXO files
+  o Some more german translations
+* Disc Master:
+  o Reading of SCL container is now possible, screens in containers will be displayed.
+  o Filename filter allows now to check double picture files with filename contains a specific string, e.g. "cover", also in options.
+* Object Manager:
+  o Rewritten the Objects management for better integration in the Painter.
+  o Objects can now be directly exported to Clipboard as ASM Text (for use with external assembler or Boriels Basic Compiler)
+  o Toggle all checked objects: Attribute, Mask or compression from main menu.
+  o Pixel manipulation: Mirror, Flip, invert and clear Object
+  o 16 Tile lists, definable type for each list
+  o Option to discard doubles at autograb works now
+  o Edit-tab: Mirror/Flip/Invert, Export, Set/Reset attributes and Mask
+  o Tileslists are now saved in the RXO file
+* Viewer
+  o While displaying RXA animations, the window size can be changed using keys "+" and "-"
+  o RXA Playback video window size can be changed using mouse
+  o RXA Playback video window: Popup menu.
+  o VID (SymbOS Video) player (Not all possible features available because I do not have these example files).
+  o TAP Streams player added for standard ZX Spectrum screens videos.
+  o Animation playback now on Double click
+  o Video players: last window positions remembered
+* XIDE:
+  o AutoREM/UnREM String can now be changed: "Rem" or "'"
+* Font Editor:
+  o ASM Export to Clipboard
+  o Undo of last action (only one! only operations, not drawing)
+  o ASM Export
+  o Updating the preview of chars while painting
+* Various:
+  o Link to the Retro-X web forum from Tools web section
+
+Known bugs:
+* NView cannot load GIFs with other than 16/256 colours or too big ones (Use OLE or convert to PNG. Don't blame me for this)
+* Some program functions are still not working.
+
+ToDo
+* Painter should use graphic tablet pen pressure levels
+* Precalculation of Linear Fading Palettes (or parts of them) on supported systems, with target colour, or Palette Crossfading
+* Export Palette to text/Basic
+* SAM Palette Line Interrupt
+* Amstrad CPC RMI Support
+* SymbOS graphic Files support
+* Enterprise 128 Modes (need informations, details about this!!! Example pictures/Available formats?)
+* Tandy CoCo 1-3 modes (need informations, details about this!!! Example pictures/Available formats?)
+* More Atari XL [256 colours but no red colour!] modes like .*IP mixed modes (Gr11+9, etc.). I talked about this on Forever Next.
+* XIDE Editor
+* MSX 2+ Modes
+* Reading/Writing real Spectrum+D/SAM discs
+
+Near Future ToDo:
+* Palettes Manager
