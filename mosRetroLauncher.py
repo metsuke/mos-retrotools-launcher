@@ -292,6 +292,13 @@ frame.pack(expand=True, fill='both', padx=10, pady=10)
 
 # Initial buttons (add them)
 add_button({
+    'name': "AYFX-EDIT",
+    'image_file': "ayfxedit.png",
+    'exe': "ayfxedit.exe",
+    'subfolder': "ayfxedit",
+    'status': "functional"
+})
+add_button({
     'name': "RETRO-X",
     'image_file': "retro-x.jpg",
     'exe': "Retro-X.exe",
