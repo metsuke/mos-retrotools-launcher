@@ -28,7 +28,8 @@ def load_wine_config(subfolder):
     
     try:
         with open(config_path, 'r') as f:
-            config = [line.strip() for line in f if line.strip() and not line.strip().startswith('#')]
+            #config = [line.strip() for line in f if line.strip() and not line.strip().startswith('#')]
+            config = [os.path.expandvars(line.strip()) for line in f if line.strip() and not line.strip().startswith('#')]
         print(f"Loaded Wine config for {subfolder}: {config}")
         return config
     except Exception as e:
@@ -53,10 +54,17 @@ def launch_program(exe_name, subfolder):
         else:
             wine_args = ['wine']
             config_args = load_wine_config(subfolder)
-            wine_args.extend(config_args)
+            # Separate environment variables from command-line args
+            env = os.environ.copy()
+            for arg in config_args:
+                if '=' in arg:
+                    key, value = arg.split('=', 1)
+                    env[key] = value
+                else:
+                    wine_args.append(arg)
             wine_args.append(exe_path)
-            print(f"Launching with Wine: {wine_args}")
-            subprocess.Popen(wine_args, shell=False)
+            print(f"Launching with Wine: {wine_args} with env: {{k: v for k, v in env.items() if k in ['WINEDEBUG', 'WINEPREFIX', 'WINEARCH']}}")
+            subprocess.Popen(wine_args, env=env, shell=False)
     except Exception as e:
         messagebox.showerror("Error", f"Failed to launch {exe_name}: {str(e)}")
         print(f"Launch error: {str(e)}")
@@ -281,7 +289,7 @@ def rebuild_gui():
 
 # Create the main window
 root = tk.Tk()
-root.title("MetsuOS RetroLauncher")
+root.title("MetsuOS RetroLauncher v0.0.4 (Alpha")
 
 # Make window non-resizable
 root.resizable(False, False)
@@ -303,7 +311,7 @@ add_button({
     'image_file': "retro-x.jpg",
     'exe': "Retro-X.exe",
     'subfolder': "retro-x",
-    'status': "wip"
+    'status': "functional"
 })
 add_button({
     'name': "VORTEX TRACKER II",
