@@ -1,0 +1,17 @@
+@echo on
+copy %1.C ..\MinGW\sources\%1\%1.C
+PATH=d:\XRoar\_Projectes\48 - AGD\AGD\MinGW\bin;d:\XRoar\_Projectes\48 - AGD\AGD\MinGW\msys\1.0\bin
+cd ..\MinGW\sources\%1
+make
+
+if %1==AGDdragon del ..\..\..\AGD-DragonSuite\AGD\AGD-OLD.EXE
+if %1==AGDdragon rename ..\..\..\AGD-DragonSuite\AGD\AGD.EXE AGD-OLD.EXE
+if %1==AGDdragon copy agd.exe ..\..\..\AGD-DragonSuite\AGD\AGD.EXE
+
+if %1==convert del ..\..\..\AGD-DragonSuite\Convert\convert-OLD.EXE
+if %1==convert rename ..\..\..\AGD-DragonSuite\Convert\Convert.EXE convert-OLD.EXE
+if %1==convert copy convert.exe ..\..\..\AGD-DragonSuite\Convert\convert.EXE
+
+if %1==cutter copy cutter.exe ..\..\..\AGD-DragonSuite\Cutter\cutter.exe
+
+cd..\..\..\AGD-DragonSuite

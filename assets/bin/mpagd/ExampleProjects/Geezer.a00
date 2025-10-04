@@ -1,0 +1,44 @@
+
+EVENT PLAYER
+
+SPRITEINK 7
+IF KEY UP
+    IF LADDERABOVE
+        LET IMAGE = 1
+        ANIMATE
+        SPRITEUP
+    ENDIF
+ENDIF
+IF KEY DOWN
+    IF LADDERBELOW
+        LET IMAGE = 1
+        ANIMATE
+        SPRITEDOWN
+    ENDIF
+ENDIF
+IF KEY RIGHT
+    IF CANGORIGHT
+        TRAIL
+        LET IMAGE = 0
+        ANIMATE
+        SPRITERIGHT
+    ELSE
+        IF K > 0
+            DIG RIGHT
+        ENDIF
+    ENDIF
+ENDIF
+IF KEY LEFT
+    IF CANGOLEFT
+        TRAIL
+        LET IMAGE = 0
+        ANIMATE
+        SPRITELEFT
+    ELSE
+        IF K > 0
+            DIG LEFT
+        ENDIF
+    ENDIF
+ENDIF
+SPRITEINK 6
+GETBLOCKS

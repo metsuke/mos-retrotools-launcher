@@ -1,0 +1,42 @@
+; Animate fodder blocks.
+
+afbk   ld hl,(dispx)       ; get current coordinates.
+       push hl             ; store them.
+       ld hl,(wintop)      ; get coordinates of window.
+       ld (dispx),hl       ; put into dispx for calculation.
+       call pradd          ; get property address.
+       ld bc,(winhgt)      ; window height and width.
+afbk0  push bc             ; store width.
+       push hl             ; store window address.
+afbk1  ld a,(hl)           ; fetch byte.
+       cp FODDER           ; is it fodder?
+       call z,afbk2        ; yes, animate that then.
+       inc hl              ; next screen address.
+       ld a,(dispy)        ; column position.
+       inc a               ; move right.
+       ld (dispy),a        ; new value.
+       djnz afbk1          ; repeat for remaining columns.
+       ld hl,dispx         ; x coordinate.
+       inc (hl)            ; down one cell.
+       inc hl              ; y coordinate.
+       ld a,(winlft)       ; left egde.
+       ld (hl),a           ; set new position.
+       pop hl              ; retrieve address of start of last line.
+       ld de,32            ; width of Spectrum screen.
+       add hl,de           ; point to next line.
+       pop bc              ; retrieve width.
+       dec c               ; one fewer row.
+       jr nz,afbk0         ; repeat for all rows.
+       pop hl              ; retrieve old coordinates from stack.
+       ld (dispx),hl       ; restore line and column.
+       ret
+afbk2  push hl             ; store property address.
+       call gprad          ; get print address.
+       ex de,hl            ; move to hl.
+       ld a,8              ; lines to scroll.
+afbk3  rrc (hl)            ; animate pixels.
+       inc h               ; next row.
+       dec a               ; decrement loop counter.
+       jp nz,afbk3         ; repeat until 8 lines done.
+       pop hl              ; restore property address.
+       ret

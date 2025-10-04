@@ -1,0 +1,147 @@
+AGD BBC Micro Port
+~~~
+
+Stream of consciousness notes
+
+Actually 2x projects:
+
+1. Convert existing AGD games for ZX Spectrum 48K to BBC Micro
+2. Create tools for AGD games to be written for native BBC Micro
+
+Useful factoids
+~~~
+Spectrum screen 256x192 = 32x24 characters (cells)
+Each cell is 8x8 pixels @ 1bpp, one attribute (fg & bg colour) per cell
+Spectrum defacto "lead platform"
+
+CPC screen 160x200 = 32x25 characters
+Each cell is 5x8 pixels @ 4bpp, 16 colours from palette of 27
+
+Coordinate system 0-255
+Compiler maps start positions from 0-255 to 0-159 for CPC
+SPRITELEFT/SPRITERIGHT commands move sprites 2 pixels on Spectrum but 1 on CPC!
+
+BBC Assumptions
+~~~
+RAM biggest challenge
+MODE 4 easiest place to start - same as Atom
+Shrink 320x256 screen down to 256x192 as per Spectrum
+Saves 2K RAM over standard MODE 4
+
+Assume 32K ModelB is lowest common denominator
+Let someone else do the Electron version
+Going to be hard to support higher res/colour screen modes without extra RAM
+
+For Spectrum conversions, don't want to attempt to autoconvert the sprites
+So leave at Spectrum resolution
+Would be nice to support MODE 1 on Master or with extra SWRAM
+Ideal would be build once then have "May I use your swram?" question at start
+Then switch MODE 4/MODE 1 at that point with same data
+
+Need way to map Spectrum 16 colour palette to 4x colours of MODE 1
+
+For BBC native, more likely to be like CPC screen and use 160x256
+so either MODE 5 (lower RAM) or MODE 2 (higher RAM)
+
+Could use 2bpp sprites with individual palette similar to POP
+Although need to think about how to shift them to per-pixel plotting in MODE 5
+(Maybe a similar approach would work using the stack?)
+Sprites are also fixed size so this helps a lot.
+
+No masking..!
+All sprites are erased and redrawn with EOR to screen buffer
+If implementing masking then would need to find a different way to restore screen
+Ala POP
+Instead use 3 fg and 4 bg colour approach? Simpler and then 4 colour mode just
+merges those two palettes.  E.g. only use FG palette in 4 colour MODE.
+
+>> Would still want to check the LUTs on a per-screen basis
+
+Memory map
+~~~
+Engine code &1100 - &262E = &152E
+Approaching 22 pages ~= 5.5K
+
+Map properties buffer = 3 pages = 768 bytes
+Screen address tables = 2 pages = 512 bytes
+Shrapnel table = 330 bytes
+
+Game starts at &2C80
+Full MODE 4 screen starts at &5800
+Spectrum sized screen starts at &6800
+
+Leaves &3B80 (15232) < 15K for game & data
+
+Can relocate everything down from &1100
+
+But eg. Roust finishes at &7F49
+Size = &52C9 (21193) bytes < ~21K for game & data
+Going to be impossible to save &17 pages...
+Can maybe get &E pages back...
+
+Some Spectrum games will be able to run MODE 1 unexpanded
+Depending on RAM requirements:
+- MODE 1 unexpanded
+- MODE 4 unexpanded, MODE 1 expanded
+- Expanded only, MODE 1
+- Exapnded only, MODE 4
+
+E.g. Roust
+Script &2CA0 - &649F = &3800 (14K!)
+Data &64A0 - &7F50 = &1AB0 (6.7K)
+
+E.g. Dodgy
+Script &2C80 - &300A = &38A (<1K)
+Data &300A - &38B2 = &8A8 (>2K)
+
+E.g. Terrapins
+Engine = &E00 - &2CD0 = &1ED0 (<8K)
+Script = &2CD0 - &52D0 = &2F00 (~12K) became &2AAF (saved &451 bytes using ZP vars)
+Data = &7C10 - &52D0 = &2940 (~10K)
+Screen = &6800 - &8000 = &1800 (6K)
+Free = &1F00 - &6800 = &4900 (~18K)
+
+Could potentially create a code optimiser down the line
+Only uses A register with Y as index to indirect ptr
+(Mainly manipulating sprites in a table)
+
+Lots of repeatedly loading the immedaite values into a register
+Could optimise repeated values in theory
+Engine "write instruction" actually just writes a string to the file
+Could change this so the compiler understand the instruction being written
+Load / store / register / address etc.
+Then could remove redundant loads of same immediate values
+
+Lots of copying variables from one location to another
+Challenge is that commands result in sequences like:
+ load spr1.x store work.x
+ load spr1.y store work.y
+ load work.x store plot.x
+ load work.y store plot.y
+So would need to figure out ability to reorder CPU instructions between commands
+I.e. do all X first then all Y
+
+Need to start brushing up on languages & compiler theory...
+
+Easy MOS RAM to steal:
+&300 - &400 = VDU workspace (1 page)
+&400 - &800 = Language workspace (4 pages)
+&800 - &9BF = Sound workspace (keep for audio)
+&9C0 - &C00 = CFS & Soft key (&240)
+&C00 - &D00 = Character defs (keep for font)
+&D00 - &E00 = NMI etc. (leave alone)
+&E00 = Free
+
+Easy ZP to steal:
+&00 - &A0 = Language workspace + Econet workspace
+
+Needs
+MAP = 3x pages = &300 - &600
+SCREEN ADDRESS TABLES = 2x pages (could be reduced) = &600 - &800
+SHRAPNEL TABLE = 330 = &14A bytes = &B00 - 330
+SPRITE TABLE = &B00 - &C00
+
+Moving all variables to ZP saved 1K of script from Terrapins!!
+Still over by 4K though...
+
+Could save another page by copying font data over BBC char defs...

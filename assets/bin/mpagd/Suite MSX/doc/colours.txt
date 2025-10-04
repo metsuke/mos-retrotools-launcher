@@ -1,0 +1,16 @@
+ 0: transparent
+ 1: black
+ 2: medium green
+ 3: light green
+ 4: dark blue
+ 5: light blue
+ 6: dark red
+ 7: cyan
+ 8: medium red
+ 9: light red
+10: dark yellow
+11: light yellow
+12: dark green
+13: magenta
+14: gray
+15: white

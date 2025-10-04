@@ -1,0 +1,7 @@
+
+EVENT FELLTOOFAR
+
+IF TYPE = 0
+    KILL
+ENDIF
+

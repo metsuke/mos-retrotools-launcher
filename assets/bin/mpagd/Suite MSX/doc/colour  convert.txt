@@ -1,0 +1,18 @@
+    MSX			ZX Spectrum
+-----------------------------------
+ 0: transparent
+ 1: black		0 (+ B)
+ 2: medium green	4
+ 3: light green		4 + B
+ 4: dark blue		1
+ 5: light blue		1 + B
+ 6: dark red		2
+ 7: cyan		5 + B
+ 8: medium red		5
+ 9: light red		2 + B
+10: dark yellow		6
+11: light yellow	6 + B
+12: dark green		4
+13: magenta		3 + B
+14: gray		7
+15: white		7 + B

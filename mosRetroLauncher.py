@@ -307,6 +307,13 @@ add_button({
     'status': "functional"
 })
 add_button({
+    'name': "MPAGD",
+    'image_file': "placeholder.png",
+    'exe': "winagd.exe",
+    'subfolder': "mpagd",
+    'status': "wip"
+})
+add_button({
     'name': "RETRO-X",
     'image_file': "retro-x.jpg",
     'exe': "Retro-X.exe",

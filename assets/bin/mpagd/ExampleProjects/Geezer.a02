@@ -1,0 +1,44 @@
+
+EVENT SPRITETYPE2
+
+IF SETTINGA = 0
+    IF SETTINGB = 66
+        LET SETTINGA = 1
+    ELSE
+        SUBTRACT 1 FROM SETTINGB
+    ENDIF
+ELSE
+    IF SETTINGB = 70
+        LET SETTINGA = 0
+    ELSE
+        ADD 1 TO SETTINGB
+    ENDIF
+ENDIF
+
+SPRITEINK SETTINGB
+
+IF COLLISION 0
+    REMOVE
+    EXPLODE 25
+    SPRITEINK 7
+    SCORE 100
+    SUBTRACT 1 FROM A
+    IF A = 0
+        DELAY 50
+        WHILE T > 0
+            SUBTRACT 1 FROM T
+            SCORE 1
+            AT 12 26
+            DISPLAY SECONDS T
+            AT 3 25
+            SHOWSCORE
+            BEEP 50
+            DELAY 2
+        ENDWHILE
+        NEXTLEVEL
+    ENDIF
+    SOUND 1
+    AT 3 25
+    SHOWSCORE
+ENDIF
+

@@ -1,0 +1,14 @@
+
+EVENT MAINLOOP1
+
+; Update the bonus timer.
+ADD 1 TO S
+IF S > 25
+    SUBTRACT 25 FROM S
+    IF T > 0
+        SUBTRACT 1 FROM T
+    ENDIF
+    AT 12 26
+    DISPLAY SECONDS T
+ENDIF
+

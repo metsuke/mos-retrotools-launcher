@@ -1,0 +1,10 @@
+; Code for header to create a .vz file
+
+	defb 'VZF0'
+	defb 'AGDGAME',0,0,0,0,0,0,0,0,0,0
+	defb $f1
+	defb $00	; lb $7b00
+	defb $7b	; hb $7b00
+
+	org $7b00
+

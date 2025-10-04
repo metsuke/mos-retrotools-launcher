@@ -1,0 +1,16 @@
+
+EVENT RESTARTSCREEN
+
+AT 6 27
+DISPLAY LIVES
+
+LET S = SCREEN
+ADD 1 TO S
+AT 15 26
+DISPLAY TRIPLEDIGITS S
+
+LET A = 0
+LET T = 60                      ; 60 seconds
+LET S = 0                       ; 25ths of a second
+
+LET K = 0                       ; no  keys collected yet.

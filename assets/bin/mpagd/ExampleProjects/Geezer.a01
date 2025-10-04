@@ -1,0 +1,86 @@
+
+EVENT SPRITETYPE1
+
+; Enemy climbing a ladder.
+IF DIRECTION = 0
+    IF LADDERABOVE
+        SPRITEUP
+    ELSE
+        GETRANDOM 2
+        IF RND = 0
+            LET DIRECTION = 2
+        ELSE
+            LET DIRECTION = 3
+        ENDIF
+        LET SETTINGA = 50
+    ENDIF
+ENDIF
+
+; Enemy descending a ladder.
+IF DIRECTION = 1
+    IF LADDERBELOW
+        SPRITEDOWN
+    ELSE
+        GETRANDOM 2
+        IF RND = 0
+            LET DIRECTION = 2
+        ELSE
+            LET DIRECTION = 3
+        ENDIF
+        LET SETTINGA = 50
+    ENDIF
+ENDIF
+
+; Enemy moving left.
+IF DIRECTION = 2
+    IF CANGOLEFT
+        SPRITELEFT
+        LET FRAME = 0
+    ELSE
+        LET DIRECTION = 3
+    ENDIF
+    IF SETTINGA > 0
+        SUBTRACT 1 FROM SETTINGA
+    ELSE
+        GETRANDOM 4
+        IF RND = 0
+            IF LADDERABOVE
+                LET DIRECTION = 0
+            ELSE
+                IF LADDERBELOW
+                    LET DIRECTION = 1
+                ENDIF
+            ENDIF
+        ENDIF
+    ENDIF
+ENDIF
+
+; Enemy moving right.
+IF DIRECTION = 3
+    IF CANGORIGHT
+        SPRITERIGHT
+        LET FRAME = 1
+    ELSE
+        LET DIRECTION = 2
+    ENDIF
+    IF SETTINGA > 0
+        SUBTRACT 1 FROM SETTINGA
+    ELSE
+        GETRANDOM 4
+        IF RND = 0
+            IF LADDERABOVE
+                LET DIRECTION = 0
+            ELSE
+                IF LADDERBELOW
+                    LET DIRECTION = 1
+                ENDIF
+            ENDIF
+        ENDIF
+    ENDIF
+ENDIF
+
+; Test if hit player.
+IF COLLISION 0
+    KILL
+ENDIF
+
